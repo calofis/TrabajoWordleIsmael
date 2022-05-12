@@ -4,6 +4,15 @@
  */
 package org.daw1.ismael.gui;
 
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import org.daw1.ismael.clases.*;
+
+
 /**
  *
  * @author ismac
@@ -13,13 +22,71 @@ public class MainGUI extends javax.swing.JFrame {
     private static final java.awt.Color COLOR_ROJO = new java.awt.Color(255,51,51);
     private static final java.awt.Color COLOR_AMARILLO = new java.awt.Color(239,208,60);
     private static final java.awt.Color COLOR_VERDE = new java.awt.Color(0,204,51);
+    private static final java.awt.Color COLOR_DEFAULT = new java.awt.Color(187,187,187);
+   
+    private Motor tipoMotor = new Motor_Test();
+    private int numIntentos = 0;
+    private Set<Character> amarillo = new TreeSet<>();
+    private Set<Character> rojo = new TreeSet<>();
+    private Set<Character> verde = new TreeSet<>();
+    private String palabra;
+    
+    private static final int MAX_INTENTOS = 6;
+    private static final int TAMANHO_PALABRA = 5;
+    
+    private final javax.swing.JLabel[][] labels = new javax.swing.JLabel[MAX_INTENTOS][TAMANHO_PALABRA];
+    
+    
+    
     /**
      * Creates new form MainGUI
      */
-    public MainGUI() {
+    public MainGUI(final Motor motor) {
         initComponents();
+        inicializarLabels();
+        Objects.requireNonNull(motor);
+        this.tipoMotor = motor;
+        this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
+        this.ExitoJPanel.setVisible(false);
+        amarillo.clear();
+        rojo.clear();
+        verde.clear();
+        
     }
 
+    public final void inicializarLabels() {
+        for (int i = 1; i <= MAX_INTENTOS; i++) {
+            for (int j = 1; j <= TAMANHO_PALABRA; j++) {
+                String nombreLabel = "JLabel" + i + "_" + j;
+                try {
+                    javax.swing.JLabel aux = (javax.swing.JLabel)this.getClass().getDeclaredField(nombreLabel).get(this);
+                    labels[i-1][j-1] = aux;
+                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
+                    Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+        }
+    }
+    
+    private void procesarPalabraInterfaz(final String insertada, final int intento) {
+        for (int i = 0; i < 5; ++i) {
+            final char c = insertada.charAt(i);
+            if (this.palabra.charAt(i) == c) {
+                this.amarillo.remove(c);
+                this.verde.add(c);
+            }
+            else if (this.palabra.contains(String.valueOf(c))) {
+                if (!this.verde.contains(c)) {
+                    this.amarillo.add(c);
+                }
+            }
+            else {
+                this.rojo.add(c);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,31 +103,31 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel1_3 = new javax.swing.JLabel();
         JLabel1_4 = new javax.swing.JLabel();
         JLabel1_5 = new javax.swing.JLabel();
-        JLabel1_6 = new javax.swing.JLabel();
         JLabel2_1 = new javax.swing.JLabel();
         JLabel2_2 = new javax.swing.JLabel();
         JLabel2_3 = new javax.swing.JLabel();
         JLabel2_4 = new javax.swing.JLabel();
         JLabel2_5 = new javax.swing.JLabel();
-        JLabel2_6 = new javax.swing.JLabel();
         JLabel3_1 = new javax.swing.JLabel();
         JLabel3_2 = new javax.swing.JLabel();
         JLabel3_3 = new javax.swing.JLabel();
         JLabel3_4 = new javax.swing.JLabel();
         JLabel3_5 = new javax.swing.JLabel();
-        JLabel3_6 = new javax.swing.JLabel();
         JLabel4_1 = new javax.swing.JLabel();
         JLabel4_2 = new javax.swing.JLabel();
         JLabel4_3 = new javax.swing.JLabel();
         JLabel4_4 = new javax.swing.JLabel();
         JLabel4_5 = new javax.swing.JLabel();
-        JLabel4_6 = new javax.swing.JLabel();
         JLabel5_1 = new javax.swing.JLabel();
         JLabel5_2 = new javax.swing.JLabel();
         JLabel5_3 = new javax.swing.JLabel();
         JLabel5_4 = new javax.swing.JLabel();
         JLabel5_5 = new javax.swing.JLabel();
-        JLabel5_6 = new javax.swing.JLabel();
+        JLabel6_1 = new javax.swing.JLabel();
+        JLabel6_2 = new javax.swing.JLabel();
+        JLabel6_3 = new javax.swing.JLabel();
+        JLabel6_4 = new javax.swing.JLabel();
+        JLabel6_5 = new javax.swing.JLabel();
         BottomJPanel = new javax.swing.JPanel();
         EstadoJPanel = new javax.swing.JPanel();
         MalJPanel = new javax.swing.JPanel();
@@ -76,6 +143,13 @@ public class MainGUI extends javax.swing.JFrame {
         FinalJLabel = new javax.swing.JLabel();
         ErrorJPanel = new javax.swing.JPanel();
         ErrorJLabel = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        JMenuArchivo = new javax.swing.JMenu();
+        JRadioNuevaPartida = new javax.swing.JRadioButtonMenuItem();
+        JMenuMotores = new javax.swing.JMenu();
+        JRadioTest = new javax.swing.JRadioButtonMenuItem();
+        JRadioFichero = new javax.swing.JRadioButtonMenuItem();
+        JRadioBaseDatos = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DAW1 WORDLE ISMAEL");
@@ -109,11 +183,6 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel1_5.setText("A");
         LetrasJPanel.add(JLabel1_5);
 
-        JLabel1_6.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        JLabel1_6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_6.setText("A");
-        LetrasJPanel.add(JLabel1_6);
-
         JLabel2_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         JLabel2_1.setText("A");
@@ -138,11 +207,6 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel2_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         JLabel2_5.setText("A");
         LetrasJPanel.add(JLabel2_5);
-
-        JLabel2_6.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        JLabel2_6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_6.setText("A");
-        LetrasJPanel.add(JLabel2_6);
 
         JLabel3_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -169,11 +233,6 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel3_5.setText("A");
         LetrasJPanel.add(JLabel3_5);
 
-        JLabel3_6.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        JLabel3_6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_6.setText("A");
-        LetrasJPanel.add(JLabel3_6);
-
         JLabel4_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         JLabel4_1.setText("A");
@@ -198,11 +257,6 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel4_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         JLabel4_5.setText("A");
         LetrasJPanel.add(JLabel4_5);
-
-        JLabel4_6.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        JLabel4_6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_6.setText("A");
-        LetrasJPanel.add(JLabel4_6);
 
         JLabel5_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -229,10 +283,30 @@ public class MainGUI extends javax.swing.JFrame {
         JLabel5_5.setText("A");
         LetrasJPanel.add(JLabel5_5);
 
-        JLabel5_6.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
-        JLabel5_6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_6.setText("A");
-        LetrasJPanel.add(JLabel5_6);
+        JLabel6_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        JLabel6_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabel6_1.setText("A");
+        LetrasJPanel.add(JLabel6_1);
+
+        JLabel6_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        JLabel6_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabel6_2.setText("A");
+        LetrasJPanel.add(JLabel6_2);
+
+        JLabel6_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        JLabel6_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabel6_3.setText("A");
+        LetrasJPanel.add(JLabel6_3);
+
+        JLabel6_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        JLabel6_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabel6_4.setText("A");
+        LetrasJPanel.add(JLabel6_4);
+
+        JLabel6_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
+        JLabel6_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabel6_5.setText("A");
+        LetrasJPanel.add(JLabel6_5);
 
         MainJPanel.add(LetrasJPanel, java.awt.BorderLayout.CENTER);
 
@@ -241,31 +315,28 @@ public class MainGUI extends javax.swing.JFrame {
 
         EstadoJPanel.setLayout(new java.awt.GridLayout(3, 0));
 
-        MalJPanel.setLayout(new java.awt.GridLayout());
+        MalJPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         MalJLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         MalJLabel.setForeground(new java.awt.Color(255, 51, 51));
         MalJLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MalJLabel.setText("jLabel1");
         MalJLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         MalJPanel.add(MalJLabel);
 
         EstadoJPanel.add(MalJPanel);
 
-        ExistenJPanel.setLayout(new java.awt.GridLayout());
+        ExistenJPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         ExisteJLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         ExisteJLabel.setForeground(new java.awt.Color(239, 208, 60));
-        ExisteJLabel.setText("jLabel1");
         ExistenJPanel.add(ExisteJLabel);
 
         EstadoJPanel.add(ExistenJPanel);
 
-        BienJPanel.setLayout(new java.awt.GridLayout());
+        BienJPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         BienJLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         BienJLabel.setForeground(new java.awt.Color(0, 204, 51));
-        BienJLabel.setText("jLabel1");
         BienJPanel.add(BienJLabel);
 
         EstadoJPanel.add(BienJPanel);
@@ -276,6 +347,11 @@ public class MainGUI extends javax.swing.JFrame {
         InputJPanel.add(PalabraTextField);
 
         EnviarButtom.setText("Enviar");
+        EnviarButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EnviarButtomActionPerformed(evt);
+            }
+        });
         InputJPanel.add(EnviarButtom);
 
         BottomJPanel.add(InputJPanel);
@@ -298,6 +374,37 @@ public class MainGUI extends javax.swing.JFrame {
 
         MainJPanel.add(BottomJPanel, java.awt.BorderLayout.PAGE_END);
 
+        JMenuArchivo.setText("Archivo");
+
+        JRadioNuevaPartida.setSelected(true);
+        JRadioNuevaPartida.setText("NuevaPartida");
+        JMenuArchivo.add(JRadioNuevaPartida);
+
+        jMenuBar1.add(JMenuArchivo);
+
+        JMenuMotores.setText("Motores");
+
+        JRadioTest.setSelected(true);
+        JRadioTest.setText("Test");
+        JRadioTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioTestActionPerformed(evt);
+            }
+        });
+        JMenuMotores.add(JRadioTest);
+
+        JRadioFichero.setSelected(true);
+        JRadioFichero.setText("Fichero");
+        JMenuMotores.add(JRadioFichero);
+
+        JRadioBaseDatos.setSelected(true);
+        JRadioBaseDatos.setText("BaseDatos");
+        JMenuMotores.add(JRadioBaseDatos);
+
+        jMenuBar1.add(JMenuMotores);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -308,13 +415,52 @@ public class MainGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 620, Short.MAX_VALUE)
+            .addGap(0, 597, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(MainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE))
+                .addComponent(MainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void EnviarButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnviarButtomActionPerformed
+       this.ErrorJLabel.setText("");
+        final String insertada = this.PalabraTextField.getText().toUpperCase();
+        if (insertada.length() != 5) {
+            this.ErrorJLabel.setText("Inserte una palabra de 5 letras");
+        }
+        else if (this.tipoMotor.existsWord(insertada)) {
+            this.numIntentos++;
+            if (insertada.equals(this.palabra)) {
+                this.FinalJLabel.setText("Has ganado en: " + numIntentos + " intentos");
+                this.FinalJLabel.setVisible(true);
+                this.EnviarButtom.setEnabled(false);
+                this.PalabraTextField.setEnabled(false);
+            }
+            else {
+                this.PalabraTextField.setText("");
+                if (this.numIntentos == 6) {
+                    this.FinalJLabel.setText("¡Has perdido!");
+                    this.FinalJLabel.setForeground(MainGUI.COLOR_ROJO);
+                    this.FinalJLabel.setVisible(true);
+                    this.EnviarButtom.setEnabled(false);
+                    this.PalabraTextField.setEnabled(false);
+                }
+                else {
+                    this.PalabraTextField.requestFocus();
+                    
+                }
+            }
+        }
+        else {
+            this.ErrorJLabel.setText("La palabra insertada no existe");
+        }
+       
+    }//GEN-LAST:event_EnviarButtomActionPerformed
+
+    private void JRadioTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioTestActionPerformed
+        tipoMotor = new Motor_Test();
+    }//GEN-LAST:event_JRadioTestActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,35 +515,42 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel JLabel1_3;
     private javax.swing.JLabel JLabel1_4;
     private javax.swing.JLabel JLabel1_5;
-    private javax.swing.JLabel JLabel1_6;
     private javax.swing.JLabel JLabel2_1;
     private javax.swing.JLabel JLabel2_2;
     private javax.swing.JLabel JLabel2_3;
     private javax.swing.JLabel JLabel2_4;
     private javax.swing.JLabel JLabel2_5;
-    private javax.swing.JLabel JLabel2_6;
     private javax.swing.JLabel JLabel3_1;
     private javax.swing.JLabel JLabel3_2;
     private javax.swing.JLabel JLabel3_3;
     private javax.swing.JLabel JLabel3_4;
     private javax.swing.JLabel JLabel3_5;
-    private javax.swing.JLabel JLabel3_6;
     private javax.swing.JLabel JLabel4_1;
     private javax.swing.JLabel JLabel4_2;
     private javax.swing.JLabel JLabel4_3;
     private javax.swing.JLabel JLabel4_4;
     private javax.swing.JLabel JLabel4_5;
-    private javax.swing.JLabel JLabel4_6;
     private javax.swing.JLabel JLabel5_1;
     private javax.swing.JLabel JLabel5_2;
     private javax.swing.JLabel JLabel5_3;
     private javax.swing.JLabel JLabel5_4;
     private javax.swing.JLabel JLabel5_5;
-    private javax.swing.JLabel JLabel5_6;
+    private javax.swing.JLabel JLabel6_1;
+    private javax.swing.JLabel JLabel6_2;
+    private javax.swing.JLabel JLabel6_3;
+    private javax.swing.JLabel JLabel6_4;
+    private javax.swing.JLabel JLabel6_5;
+    private javax.swing.JMenu JMenuArchivo;
+    private javax.swing.JMenu JMenuMotores;
+    private javax.swing.JRadioButtonMenuItem JRadioBaseDatos;
+    private javax.swing.JRadioButtonMenuItem JRadioFichero;
+    private javax.swing.JRadioButtonMenuItem JRadioNuevaPartida;
+    private javax.swing.JRadioButtonMenuItem JRadioTest;
     private javax.swing.JPanel LetrasJPanel;
     private javax.swing.JPanel MainJPanel;
     private javax.swing.JLabel MalJLabel;
     private javax.swing.JPanel MalJPanel;
     private javax.swing.JTextField PalabraTextField;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
