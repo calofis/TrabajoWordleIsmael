@@ -25,7 +25,7 @@ public class Motor_Test implements Motor{
 
     @Override
     public boolean existsWord(String palabra) {
-         return false;
+         return true;
     }
 
     @Override

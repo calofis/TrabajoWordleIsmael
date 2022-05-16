@@ -51,6 +51,7 @@ public class MainGUI extends javax.swing.JFrame {
         amarillo.clear();
         rojo.clear();
         verde.clear();
+        JRadioNuevaPartida.setSelected(false);
         
     }
 
@@ -68,6 +69,28 @@ public class MainGUI extends javax.swing.JFrame {
             }
             
         }
+    }
+    
+    private void resetarJuego(){
+         for (int i = 1; i <= MAX_INTENTOS; i++) {
+            for (int j = 1; j <= TAMANHO_PALABRA; j++) {
+                labels[i-1][j-1].setText("A");
+                labels[i-1][j-1].setForeground(COLOR_DEFAULT);
+            } 
+        }
+        this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
+        this.ExitoJPanel.setVisible(false);
+        amarillo.clear();
+        this.ExisteJLabel.setText("");
+        rojo.clear();
+        this.MalJLabel.setText("");
+        verde.clear();
+        this.BienJLabel.setText("");
+        this.EnviarButtom.setEnabled(true);
+        this.PalabraTextField.setEnabled(true);
+        this.PalabraTextField.setText("");
+        
+        
     }
     
     private void procesosInterfaz(final String insertada, final int intento) {
@@ -386,6 +409,11 @@ public class MainGUI extends javax.swing.JFrame {
 
         JRadioNuevaPartida.setSelected(true);
         JRadioNuevaPartida.setText("NuevaPartida");
+        JRadioNuevaPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioNuevaPartidaActionPerformed(evt);
+            }
+        });
         JMenuArchivo.add(JRadioNuevaPartida);
 
         jMenuBar1.add(JMenuArchivo);
@@ -473,6 +501,13 @@ public class MainGUI extends javax.swing.JFrame {
     private void JRadioTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioTestActionPerformed
         tipoMotor = new Motor_Test();
     }//GEN-LAST:event_JRadioTestActionPerformed
+
+    private void JRadioNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioNuevaPartidaActionPerformed
+       if(JRadioNuevaPartida.isSelected()){
+           JRadioNuevaPartida.setSelected(false);
+           resetarJuego();
+       }
+    }//GEN-LAST:event_JRadioNuevaPartidaActionPerformed
 
     /**
      * @param args the command line arguments
