@@ -41,11 +41,11 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * Creates new form MainGUI
      */
-    public MainGUI(final Motor motor) {
+    public MainGUI() {
         initComponents();
         inicializarLabels();
-        Objects.requireNonNull(motor);
-        this.tipoMotor = motor;
+        Objects.requireNonNull(tipoMotor);
+        this.tipoMotor = tipoMotor;
         this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
         this.ExitoJPanel.setVisible(false);
         amarillo.clear();
@@ -70,20 +70,28 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }
     
-    private void procesarPalabraInterfaz(final String insertada, final int intento) {
+    private void procesosInterfaz(final String insertada, final int intento) {
         for (int i = 0; i < 5; ++i) {
             final char c = insertada.charAt(i);
+            labels[intento][i].setText(String.valueOf(c));
             if (this.palabra.charAt(i) == c) {
+                labels[intento][i].setForeground(COLOR_VERDE);
                 this.amarillo.remove(c);
                 this.verde.add(c);
+                this.ExisteJLabel.setText(this.amarillo.toString());
+                this.BienJLabel.setText(this.verde.toString());
             }
             else if (this.palabra.contains(String.valueOf(c))) {
                 if (!this.verde.contains(c)) {
+                     labels[intento][i].setForeground(COLOR_AMARILLO);
                     this.amarillo.add(c);
+                    this.ExisteJLabel.setText(this.amarillo.toString());
                 }
             }
             else {
+                labels[intento][i].setForeground(COLOR_ROJO);
                 this.rojo.add(c);
+                this.MalJLabel.setText(this.rojo.toString());
             }
         }
     }
@@ -430,19 +438,22 @@ public class MainGUI extends javax.swing.JFrame {
             this.ErrorJLabel.setText("Inserte una palabra de 5 letras");
         }
         else if (this.tipoMotor.existsWord(insertada)) {
+            procesosInterfaz(insertada, numIntentos);
             this.numIntentos++;
             if (insertada.equals(this.palabra)) {
-                this.FinalJLabel.setText("Has ganado en: " + numIntentos + " intentos");
+                this.ExitoJPanel.setVisible(true);
                 this.FinalJLabel.setVisible(true);
+                this.FinalJLabel.setText("Has ganado en: " + numIntentos + " intentos");
                 this.EnviarButtom.setEnabled(false);
                 this.PalabraTextField.setEnabled(false);
             }
             else {
                 this.PalabraTextField.setText("");
                 if (this.numIntentos == 6) {
+                    this.ExitoJPanel.setVisible(true);
+                    this.FinalJLabel.setVisible(true);
                     this.FinalJLabel.setText("¡Has perdido!");
                     this.FinalJLabel.setForeground(MainGUI.COLOR_ROJO);
-                    this.FinalJLabel.setVisible(true);
                     this.EnviarButtom.setEnabled(false);
                     this.PalabraTextField.setEnabled(false);
                 }
@@ -455,6 +466,7 @@ public class MainGUI extends javax.swing.JFrame {
         else {
             this.ErrorJLabel.setText("La palabra insertada no existe");
         }
+        
        
     }//GEN-LAST:event_EnviarButtomActionPerformed
 
