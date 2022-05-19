@@ -16,7 +16,7 @@ public class FixedLengthString {
     
     public FixedLengthString(final String value) {
         Objects.requireNonNull(value);
-        if (value.length() != 5) {
+        if (value.length() != LENGTH) {
             throw new IllegalArgumentException("Only 5 letter words are allowed");
         }
         if (!value.matches("[A-Za-z]{5}")) {

@@ -8,8 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JLabel;
+import java.util.logging.Logger;import javax.swing.JLabel;
 import org.daw1.ismael.clases.*;
 
 
@@ -48,10 +47,15 @@ public class MainGUI extends javax.swing.JFrame {
         this.tipoMotor = tipoMotor;
         this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
         this.ExitoJPanel.setVisible(false);
-        amarillo.clear();
-        rojo.clear();
-        verde.clear();
-        JRadioNuevaPartida.setSelected(false);
+        this.amarillo.clear();
+        this.rojo.clear();
+        this.verde.clear();
+        this.JRadioNuevaPartida.setSelected(false);
+        this.JRadioBaseDatos.setSelected(false);
+        this.JRadioFichero.setSelected(false);
+        this.JRadioTest.setSelected(true);
+        this.JRadioEditarMotor.setSelected(false);
+        
         
     }
 
@@ -89,6 +93,7 @@ public class MainGUI extends javax.swing.JFrame {
         this.EnviarButtom.setEnabled(true);
         this.PalabraTextField.setEnabled(true);
         this.PalabraTextField.setText("");
+        this.numIntentos = 0;
         
         
     }
@@ -181,6 +186,7 @@ public class MainGUI extends javax.swing.JFrame {
         JRadioTest = new javax.swing.JRadioButtonMenuItem();
         JRadioFichero = new javax.swing.JRadioButtonMenuItem();
         JRadioBaseDatos = new javax.swing.JRadioButtonMenuItem();
+        JRadioEditarMotor = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DAW1 WORDLE ISMAEL");
@@ -431,11 +437,30 @@ public class MainGUI extends javax.swing.JFrame {
 
         JRadioFichero.setSelected(true);
         JRadioFichero.setText("Fichero");
+        JRadioFichero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioFicheroActionPerformed(evt);
+            }
+        });
         JMenuMotores.add(JRadioFichero);
 
         JRadioBaseDatos.setSelected(true);
         JRadioBaseDatos.setText("BaseDatos");
+        JRadioBaseDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioBaseDatosActionPerformed(evt);
+            }
+        });
         JMenuMotores.add(JRadioBaseDatos);
+
+        JRadioEditarMotor.setSelected(true);
+        JRadioEditarMotor.setText("EditarMotor");
+        JRadioEditarMotor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioEditarMotorActionPerformed(evt);
+            }
+        });
+        JMenuMotores.add(JRadioEditarMotor);
 
         jMenuBar1.add(JMenuMotores);
 
@@ -499,15 +524,47 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_EnviarButtomActionPerformed
 
     private void JRadioTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioTestActionPerformed
-        tipoMotor = new Motor_Test();
+        if(this.JRadioTest.isSelected()){
+            this.tipoMotor = new Motor_Test();
+            this.JRadioBaseDatos.setSelected(false);
+            this.JRadioFichero.setSelected(false);
+            resetarJuego();
+        }
+        
     }//GEN-LAST:event_JRadioTestActionPerformed
 
     private void JRadioNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioNuevaPartidaActionPerformed
-       if(JRadioNuevaPartida.isSelected()){
-           JRadioNuevaPartida.setSelected(false);
+       if(this.JRadioNuevaPartida.isSelected()){
+           this.JRadioNuevaPartida.setSelected(false);
            resetarJuego();
        }
     }//GEN-LAST:event_JRadioNuevaPartidaActionPerformed
+
+    private void JRadioFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioFicheroActionPerformed
+         if(this.JRadioFichero.isSelected()){
+            this.tipoMotor = new Motor_Test();
+            this.JRadioBaseDatos.setSelected(false);
+            this.JRadioTest.setSelected(false);
+            resetarJuego();
+        }
+    }//GEN-LAST:event_JRadioFicheroActionPerformed
+
+    private void JRadioBaseDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosActionPerformed
+         if(this.JRadioBaseDatos.isSelected()){
+            this.tipoMotor = new Motor_Test();
+            this.JRadioFichero.setSelected(false);
+            this.JRadioTest.setSelected(false);
+            resetarJuego();
+        }
+    }//GEN-LAST:event_JRadioBaseDatosActionPerformed
+
+    private void JRadioEditarMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioEditarMotorActionPerformed
+       if(this.JRadioEditarMotor.isSelected()){
+           this.JRadioEditarMotor.setSelected(false);
+           org.daw1.ismael.gui.ModificarMotor panel = new org.daw1.ismael.gui.ModificarMotor(this, rootPaneCheckingEnabled);
+           panel.setVisible(true);
+       }
+    }//GEN-LAST:event_JRadioEditarMotorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -590,6 +647,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JMenu JMenuArchivo;
     private javax.swing.JMenu JMenuMotores;
     private javax.swing.JRadioButtonMenuItem JRadioBaseDatos;
+    private javax.swing.JRadioButtonMenuItem JRadioEditarMotor;
     private javax.swing.JRadioButtonMenuItem JRadioFichero;
     private javax.swing.JRadioButtonMenuItem JRadioNuevaPartida;
     private javax.swing.JRadioButtonMenuItem JRadioTest;
