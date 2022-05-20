@@ -4,6 +4,8 @@
  */
 package wordle.ismael;
 
+import org.daw1.ismael.clases.Motor_Fichero;
+
 /**
  *
  * @author ismac
@@ -14,7 +16,8 @@ public class WordleIsmael {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+       Motor_Fichero x = new Motor_Fichero();
+       x.removeWord("treta");
     }
     
 }

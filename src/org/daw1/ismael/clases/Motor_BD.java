@@ -4,12 +4,14 @@
  */
 package org.daw1.ismael.clases;
 
+
 /**
  *
  * @author ismac
  */
 public class Motor_BD implements Motor{
-
+    
+    
     @Override
     public boolean addWord(String word) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

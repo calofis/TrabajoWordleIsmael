@@ -23,7 +23,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static final java.awt.Color COLOR_VERDE = new java.awt.Color(0,204,51);
     private static final java.awt.Color COLOR_DEFAULT = new java.awt.Color(187,187,187);
    
-    private Motor tipoMotor = new Motor_Test();
+    private static Motor tipoMotor = new Motor_Test();
     private int numIntentos = 0;
     private Set<Character> amarillo = new TreeSet<>();
     private Set<Character> rojo = new TreeSet<>();
@@ -57,6 +57,10 @@ public class MainGUI extends javax.swing.JFrame {
         this.JRadioEditarMotor.setSelected(false);
         
         
+    }
+    
+    public static Motor getTipoMotor(){
+        return tipoMotor;
     }
 
     public final void inicializarLabels() {
@@ -542,7 +546,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void JRadioFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioFicheroActionPerformed
          if(this.JRadioFichero.isSelected()){
-            this.tipoMotor = new Motor_Test();
+            this.tipoMotor = new Motor_Fichero();
             this.JRadioBaseDatos.setSelected(false);
             this.JRadioTest.setSelected(false);
             resetarJuego();

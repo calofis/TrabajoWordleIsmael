@@ -4,15 +4,20 @@
  */
 package org.daw1.ismael.gui;
 
+import org.daw1.ismael.clases.Motor;
+
 /**
  *
  * @author ismac
  */
 public class ModificarMotor extends javax.swing.JDialog {
 
-    /**
-     * Creates new form ModificarMotor
-     */
+    private Motor tipoMotor = MainGUI.getTipoMotor();
+     private static final java.awt.Color COLOR_ROJO = new java.awt.Color(255,51,51);
+    private static final java.awt.Color COLOR_AMARILLO = new java.awt.Color(239,208,60);
+    private static final java.awt.Color COLOR_VERDE = new java.awt.Color(0,204,51);
+    private static final java.awt.Color COLOR_DEFAULT = new java.awt.Color(187,187,187);
+    
     public ModificarMotor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -37,8 +42,8 @@ public class ModificarMotor extends javax.swing.JDialog {
         estadoInsertarJLabel = new javax.swing.JLabel();
         borrarJPanel = new javax.swing.JPanel();
         borradoJPanel = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        borrarJText = new javax.swing.JTextField();
+        borrarJButtom = new javax.swing.JButton();
         estadoJPanel = new javax.swing.JPanel();
         estadoJLabel = new javax.swing.JLabel();
         tituloJPanel = new javax.swing.JPanel();
@@ -51,6 +56,7 @@ public class ModificarMotor extends javax.swing.JDialog {
         cuerpoJPanel.setLayout(new java.awt.GridLayout(2, 1));
 
         anadirJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
+        anadirJPanel.setToolTipText("Alta palabra");
         anadirJPanel.setLayout(new java.awt.GridLayout(2, 1));
 
         anadirTextField.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -59,6 +65,11 @@ public class ModificarMotor extends javax.swing.JDialog {
 
         anadirButtom.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         anadirButtom.setText("Añadir");
+        anadirButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anadirButtomActionPerformed(evt);
+            }
+        });
         insertarJPanel.add(anadirButtom);
 
         anadirJPanel.add(insertarJPanel);
@@ -71,15 +82,21 @@ public class ModificarMotor extends javax.swing.JDialog {
         cuerpoJPanel.add(anadirJPanel);
 
         borrarJPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12))); // NOI18N
+        borrarJPanel.setToolTipText("Baja Palabra");
         borrarJPanel.setLayout(new java.awt.GridLayout(2, 1));
 
-        jTextField1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jTextField1.setPreferredSize(new java.awt.Dimension(160, 23));
-        borradoJPanel.add(jTextField1);
+        borrarJText.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        borrarJText.setPreferredSize(new java.awt.Dimension(160, 23));
+        borradoJPanel.add(borrarJText);
 
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jButton1.setText("Borrar");
-        borradoJPanel.add(jButton1);
+        borrarJButtom.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        borrarJButtom.setText("Borrar");
+        borrarJButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarJButtomActionPerformed(evt);
+            }
+        });
+        borradoJPanel.add(borrarJButtom);
 
         borrarJPanel.add(borradoJPanel);
 
@@ -95,7 +112,7 @@ public class ModificarMotor extends javax.swing.JDialog {
         tituloJPanel.setLayout(new java.awt.GridBagLayout());
 
         tituloJLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        tituloJLabel.setText("Titulo");
+        tituloJLabel.setText("Gestion Motor");
         tituloJPanel.add(tituloJLabel, new java.awt.GridBagConstraints());
 
         mainJPanel.add(tituloJPanel, java.awt.BorderLayout.PAGE_START);
@@ -117,6 +134,54 @@ public class ModificarMotor extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void anadirButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirButtomActionPerformed
+        this.estadoInsertarJLabel.setVisible(false);
+        if(!tipoMotor.existsWord(this.anadirTextField.getText())){
+            if(this.anadirTextField.getText().length() != 5){
+                this.estadoInsertarJLabel.setText("La palabra tiene que ser de 5 letras");
+                this.estadoInsertarJLabel.setForeground(COLOR_ROJO);
+                this.estadoInsertarJLabel.setVisible(true);
+            }else if(!this.anadirTextField.getText().matches("[A-Za-z]{5}")){
+                this.estadoInsertarJLabel.setText("La palabra solo puede llevar letras");
+                this.estadoInsertarJLabel.setForeground(COLOR_ROJO);
+                this.estadoInsertarJLabel.setVisible(true);
+            }else{
+                tipoMotor.addWord(this.anadirTextField.getText());
+                this.estadoInsertarJLabel.setText("La palabra fue agregada con exito");
+                this.estadoInsertarJLabel.setForeground(COLOR_VERDE);
+                this.estadoInsertarJLabel.setVisible(true);
+            } 
+        }else{
+            this.estadoInsertarJLabel.setText("La palabra ya existe no puedes agregarla");
+            this.estadoInsertarJLabel.setForeground(COLOR_ROJO);
+            this.estadoInsertarJLabel.setVisible(true);
+        }
+    }//GEN-LAST:event_anadirButtomActionPerformed
+
+    private void borrarJButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarJButtomActionPerformed
+        this.estadoJLabel.setVisible(false);
+        if(tipoMotor.existsWord(this.borrarJText.getText())){
+            if(this.borrarJText.getText().length() != 5){
+                this.estadoJLabel.setText("La palabra tiene que ser de 5 letras");
+                this.estadoJLabel.setForeground(COLOR_ROJO);
+                this.estadoJLabel.setVisible(true);
+            }else if(!this.borrarJText.getText().matches("[A-Za-z]{5}")){
+                this.estadoJLabel.setText("La palabra solo puede llevar letras");
+                this.estadoJLabel.setForeground(COLOR_ROJO);
+                this.estadoJLabel.setVisible(true);
+            }else{
+                tipoMotor.removeWord(this.borrarJText.getText().toString());
+                this.estadoJLabel.setText("La palabra fue borrada con exito");
+                this.estadoJLabel.setForeground(COLOR_VERDE);
+                this.estadoJLabel.setVisible(true);
+            } 
+        }else{
+            this.estadoJLabel.setText("La palabra no existe no puedes borrarla");
+            this.estadoJLabel.setForeground(COLOR_ROJO);
+            this.estadoJLabel.setVisible(true);
+        }
+    }//GEN-LAST:event_borrarJButtomActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,15 +230,15 @@ public class ModificarMotor extends javax.swing.JDialog {
     private javax.swing.JPanel anadirJPanel;
     private javax.swing.JTextField anadirTextField;
     private javax.swing.JPanel borradoJPanel;
+    private javax.swing.JButton borrarJButtom;
     private javax.swing.JPanel borrarJPanel;
+    private javax.swing.JTextField borrarJText;
     private javax.swing.JPanel cuerpoJPanel;
     private javax.swing.JLabel estadoInsertarJLabel;
     private javax.swing.JPanel estadoInsertarJPanel;
     private javax.swing.JLabel estadoJLabel;
     private javax.swing.JPanel estadoJPanel;
     private javax.swing.JPanel insertarJPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel mainJPanel;
     private javax.swing.JLabel tituloJLabel;
     private javax.swing.JPanel tituloJPanel;
