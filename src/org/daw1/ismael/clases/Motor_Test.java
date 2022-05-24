@@ -12,8 +12,9 @@ public class Motor_Test implements Motor{
 
 
     @Override
-    public FixedLengthString randomWord() {
-        return new FixedLengthString("CICLO");
+    public String randomWord() {
+        String palabra = "CICLO";
+        return palabra;
     }
     
    

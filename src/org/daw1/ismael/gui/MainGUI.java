@@ -4,6 +4,7 @@
  */
 package org.daw1.ismael.gui;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -45,16 +46,18 @@ public class MainGUI extends javax.swing.JFrame {
         inicializarLabels();
         Objects.requireNonNull(tipoMotor);
         this.tipoMotor = tipoMotor;
-        this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
+        this.palabra = this.tipoMotor.randomWord().toUpperCase();
         this.ExitoJPanel.setVisible(false);
         this.amarillo.clear();
         this.rojo.clear();
         this.verde.clear();
         this.JRadioNuevaPartida.setSelected(false);
-        this.JRadioBaseDatos.setSelected(false);
+        this.JRadioBaseDatosEs.setSelected(false);
         this.JRadioFichero.setSelected(false);
         this.JRadioTest.setSelected(true);
         this.JRadioEditarMotor.setSelected(false);
+        this.JRadioTest.setEnabled(false);
+        this.JRadioBaseDatosGl.setSelected(false);
         
         
     }
@@ -79,11 +82,10 @@ public class MainGUI extends javax.swing.JFrame {
     private void resetarJuego(){
          for (int i = 1; i <= MAX_INTENTOS; i++) {
             for (int j = 1; j <= TAMANHO_PALABRA; j++) {
-                labels[i-1][j-1].setText("A");
-                labels[i-1][j-1].setForeground(COLOR_DEFAULT);
+                labels[i-1][j-1].setText("");
             } 
         }
-        this.palabra = this.tipoMotor.randomWord().getValue().toUpperCase();
+        this.palabra = this.tipoMotor.randomWord().toUpperCase();
         this.ExitoJPanel.setVisible(false);
         amarillo.clear();
         this.ExisteJLabel.setText("");
@@ -115,6 +117,8 @@ public class MainGUI extends javax.swing.JFrame {
                      labels[intento][i].setForeground(COLOR_AMARILLO);
                     this.amarillo.add(c);
                     this.ExisteJLabel.setText(this.amarillo.toString());
+                }else{
+                    labels[intento][i].setForeground(COLOR_AMARILLO);
                 }
             }
             else {
@@ -186,7 +190,8 @@ public class MainGUI extends javax.swing.JFrame {
         JMenuMotores = new javax.swing.JMenu();
         JRadioTest = new javax.swing.JRadioButtonMenuItem();
         JRadioFichero = new javax.swing.JRadioButtonMenuItem();
-        JRadioBaseDatos = new javax.swing.JRadioButtonMenuItem();
+        JRadioBaseDatosEs = new javax.swing.JRadioButtonMenuItem();
+        JRadioBaseDatosGl = new javax.swing.JRadioButtonMenuItem();
         JRadioEditarMotor = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -196,154 +201,154 @@ public class MainGUI extends javax.swing.JFrame {
 
         LetrasJPanel.setLayout(new java.awt.GridLayout(6, 5));
 
+        JLabel1_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel1_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel1_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_1.setText("A");
         LetrasJPanel.add(JLabel1_1);
 
+        JLabel1_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel1_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel1_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_2.setText("A");
         LetrasJPanel.add(JLabel1_2);
 
+        JLabel1_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel1_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel1_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_3.setText("A");
         LetrasJPanel.add(JLabel1_3);
 
+        JLabel1_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel1_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel1_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_4.setText("A");
         LetrasJPanel.add(JLabel1_4);
 
+        JLabel1_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel1_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel1_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel1_5.setText("A");
         LetrasJPanel.add(JLabel1_5);
 
+        JLabel2_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel2_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_1.setText("A");
         LetrasJPanel.add(JLabel2_1);
 
+        JLabel2_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel2_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_2.setText("A");
         LetrasJPanel.add(JLabel2_2);
 
+        JLabel2_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel2_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_3.setText("A");
         LetrasJPanel.add(JLabel2_3);
 
+        JLabel2_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel2_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_4.setText("A");
         LetrasJPanel.add(JLabel2_4);
 
+        JLabel2_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel2_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel2_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel2_5.setText("A");
         LetrasJPanel.add(JLabel2_5);
 
+        JLabel3_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel3_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_1.setText("A");
         LetrasJPanel.add(JLabel3_1);
 
+        JLabel3_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel3_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_2.setText("A");
         LetrasJPanel.add(JLabel3_2);
 
+        JLabel3_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel3_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_3.setText("A");
         LetrasJPanel.add(JLabel3_3);
 
+        JLabel3_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel3_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_4.setText("A");
         LetrasJPanel.add(JLabel3_4);
 
+        JLabel3_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel3_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel3_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel3_5.setText("A");
         LetrasJPanel.add(JLabel3_5);
 
+        JLabel4_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel4_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_1.setText("A");
         LetrasJPanel.add(JLabel4_1);
 
+        JLabel4_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel4_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_2.setText("A");
         LetrasJPanel.add(JLabel4_2);
 
+        JLabel4_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel4_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_3.setText("A");
         LetrasJPanel.add(JLabel4_3);
 
+        JLabel4_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel4_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_4.setText("A");
         LetrasJPanel.add(JLabel4_4);
 
+        JLabel4_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel4_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel4_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel4_5.setText("A");
         LetrasJPanel.add(JLabel4_5);
 
+        JLabel5_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel5_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_1.setText("A");
         LetrasJPanel.add(JLabel5_1);
 
+        JLabel5_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel5_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_2.setText("A");
         LetrasJPanel.add(JLabel5_2);
 
+        JLabel5_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel5_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_3.setText("A");
         LetrasJPanel.add(JLabel5_3);
 
+        JLabel5_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel5_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_4.setText("A");
         LetrasJPanel.add(JLabel5_4);
 
+        JLabel5_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel5_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel5_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel5_5.setText("A");
         LetrasJPanel.add(JLabel5_5);
 
+        JLabel6_1.setBackground(new java.awt.Color(255, 255, 255));
         JLabel6_1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel6_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel6_1.setText("A");
         LetrasJPanel.add(JLabel6_1);
 
+        JLabel6_2.setBackground(new java.awt.Color(255, 255, 255));
         JLabel6_2.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel6_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel6_2.setText("A");
         LetrasJPanel.add(JLabel6_2);
 
+        JLabel6_3.setBackground(new java.awt.Color(255, 255, 255));
         JLabel6_3.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel6_3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel6_3.setText("A");
         LetrasJPanel.add(JLabel6_3);
 
+        JLabel6_4.setBackground(new java.awt.Color(255, 255, 255));
         JLabel6_4.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel6_4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel6_4.setText("A");
         LetrasJPanel.add(JLabel6_4);
 
+        JLabel6_5.setBackground(new java.awt.Color(255, 255, 255));
         JLabel6_5.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         JLabel6_5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabel6_5.setText("A");
         LetrasJPanel.add(JLabel6_5);
 
         MainJPanel.add(LetrasJPanel, java.awt.BorderLayout.CENTER);
@@ -445,14 +450,23 @@ public class MainGUI extends javax.swing.JFrame {
         });
         JMenuMotores.add(JRadioFichero);
 
-        JRadioBaseDatos.setSelected(true);
-        JRadioBaseDatos.setText("BaseDatos");
-        JRadioBaseDatos.addActionListener(new java.awt.event.ActionListener() {
+        JRadioBaseDatosEs.setSelected(true);
+        JRadioBaseDatosEs.setText("BaseDatos_es");
+        JRadioBaseDatosEs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JRadioBaseDatosActionPerformed(evt);
+                JRadioBaseDatosEsActionPerformed(evt);
             }
         });
-        JMenuMotores.add(JRadioBaseDatos);
+        JMenuMotores.add(JRadioBaseDatosEs);
+
+        JRadioBaseDatosGl.setSelected(true);
+        JRadioBaseDatosGl.setText("BaseDatos_gl");
+        JRadioBaseDatosGl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JRadioBaseDatosGlActionPerformed(evt);
+            }
+        });
+        JMenuMotores.add(JRadioBaseDatosGl);
 
         JRadioEditarMotor.setSelected(true);
         JRadioEditarMotor.setText("EditarMotor");
@@ -506,7 +520,7 @@ public class MainGUI extends javax.swing.JFrame {
                 if (this.numIntentos == 6) {
                     this.ExitoJPanel.setVisible(true);
                     this.FinalJLabel.setVisible(true);
-                    this.FinalJLabel.setText("¡Has perdido!");
+                    this.FinalJLabel.setText("¡Has perdido!" + " La palabra era: " + this.palabra);
                     this.FinalJLabel.setForeground(MainGUI.COLOR_ROJO);
                     this.EnviarButtom.setEnabled(false);
                     this.PalabraTextField.setEnabled(false);
@@ -527,8 +541,13 @@ public class MainGUI extends javax.swing.JFrame {
     private void JRadioTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioTestActionPerformed
         if(this.JRadioTest.isSelected()){
             this.tipoMotor = new Motor_Test();
-            this.JRadioBaseDatos.setSelected(false);
+            this.JRadioBaseDatosEs.setSelected(false);
+            this.JRadioBaseDatosGl.setSelected(false);
             this.JRadioFichero.setSelected(false);
+            this.JRadioBaseDatosEs.setEnabled(true);
+            this.JRadioTest.setEnabled(false);
+            this.JRadioFichero.setEnabled(true);
+             this.JRadioBaseDatosGl.setEnabled(true);
             resetarJuego();
         }
         
@@ -544,20 +563,35 @@ public class MainGUI extends javax.swing.JFrame {
     private void JRadioFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioFicheroActionPerformed
          if(this.JRadioFichero.isSelected()){
             this.tipoMotor = new Motor_Fichero();
-            this.JRadioBaseDatos.setSelected(false);
+            this.JRadioBaseDatosEs.setSelected(false);
+            this.JRadioBaseDatosGl.setSelected(false);
             this.JRadioTest.setSelected(false);
+            this.JRadioTest.setEnabled(true);
+            this.JRadioBaseDatosEs.setEnabled(true);
+            this.JRadioFichero.setEnabled(false);
+             this.JRadioBaseDatosGl.setEnabled(true);
             resetarJuego();
         }
     }//GEN-LAST:event_JRadioFicheroActionPerformed
 
-    private void JRadioBaseDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosActionPerformed
-         if(this.JRadioBaseDatos.isSelected()){
-            this.tipoMotor = new Motor_Test();
+    private void JRadioBaseDatosEsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosEsActionPerformed
+         if(this.JRadioBaseDatosEs.isSelected()){
+             try {
+                 this.tipoMotor = new Motor_BDes();
+             } catch (SQLException ex) {
+                 Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+             }
             this.JRadioFichero.setSelected(false);
             this.JRadioTest.setSelected(false);
+            this.JRadioBaseDatosGl.setSelected(false);
+            this.JRadioBaseDatosEs.setEnabled(false);
+            this.JRadioTest.setEnabled(true);
+            this.JRadioFichero.setEnabled(true);
+             this.JRadioBaseDatosGl.setEnabled(true);
+            
             resetarJuego();
         }
-    }//GEN-LAST:event_JRadioBaseDatosActionPerformed
+    }//GEN-LAST:event_JRadioBaseDatosEsActionPerformed
 
     private void JRadioEditarMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioEditarMotorActionPerformed
        if(this.JRadioEditarMotor.isSelected()){
@@ -566,6 +600,25 @@ public class MainGUI extends javax.swing.JFrame {
            panel.setVisible(true);
        }
     }//GEN-LAST:event_JRadioEditarMotorActionPerformed
+
+    private void JRadioBaseDatosGlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosGlActionPerformed
+        if(this.JRadioBaseDatosGl.isSelected()){
+            try {
+                this.tipoMotor = new Motor_BDgl();
+            } catch (SQLException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.JRadioFichero.setSelected(false);
+            this.JRadioTest.setSelected(false);
+            this.JRadioBaseDatosEs.setSelected(false);
+            this.JRadioBaseDatosEs.setEnabled(true);
+            this.JRadioTest.setEnabled(true);
+            this.JRadioFichero.setEnabled(true);
+            this.JRadioBaseDatosGl.setEnabled(false);
+            
+            resetarJuego();
+        }
+    }//GEN-LAST:event_JRadioBaseDatosGlActionPerformed
 
     /**
      * @param args the command line arguments
@@ -647,7 +700,8 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel JLabel6_5;
     private javax.swing.JMenu JMenuArchivo;
     private javax.swing.JMenu JMenuMotores;
-    private javax.swing.JRadioButtonMenuItem JRadioBaseDatos;
+    private javax.swing.JRadioButtonMenuItem JRadioBaseDatosEs;
+    private javax.swing.JRadioButtonMenuItem JRadioBaseDatosGl;
     private javax.swing.JRadioButtonMenuItem JRadioEditarMotor;
     private javax.swing.JRadioButtonMenuItem JRadioFichero;
     private javax.swing.JRadioButtonMenuItem JRadioNuevaPartida;

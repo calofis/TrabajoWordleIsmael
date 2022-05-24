@@ -16,5 +16,5 @@ public interface Motor{
             
     public boolean removeWord(String word);
     
-    public FixedLengthString randomWord();
+    public String randomWord();
 }

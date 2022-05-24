@@ -114,9 +114,10 @@ public class Motor_Fichero implements Motor{
     }
 
     @Override
-    public FixedLengthString randomWord() {
+    public String randomWord() {
                 int nR = rn.nextInt(palabras.size());
-                return new FixedLengthString(palabras.get(nR));
+                String palabra = palabras.get(nR);
+                return palabra;
     }
     
 }
