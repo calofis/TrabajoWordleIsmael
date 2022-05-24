@@ -5,6 +5,7 @@
 package org.daw1.ismael.gui;
 
 import org.daw1.ismael.clases.Motor;
+import org.daw1.ismael.clases.Motor_Test;
 
 /**
  *
@@ -12,15 +13,16 @@ import org.daw1.ismael.clases.Motor;
  */
 public class ModificarMotor extends javax.swing.JDialog {
 
-    private Motor tipoMotor = MainGUI.getTipoMotor();
+    private Motor tipoMotor;
      private static final java.awt.Color COLOR_ROJO = new java.awt.Color(255,51,51);
     private static final java.awt.Color COLOR_AMARILLO = new java.awt.Color(239,208,60);
     private static final java.awt.Color COLOR_VERDE = new java.awt.Color(0,204,51);
     private static final java.awt.Color COLOR_DEFAULT = new java.awt.Color(187,187,187);
     
-    public ModificarMotor(java.awt.Frame parent, boolean modal) {
+    public ModificarMotor(java.awt.Frame parent, boolean modal, Motor tipoMotor) {
         super(parent, modal);
         initComponents();
+        this.tipoMotor = tipoMotor;
     }
 
     /**
@@ -171,7 +173,7 @@ public class ModificarMotor extends javax.swing.JDialog {
                 this.estadoJLabel.setForeground(COLOR_ROJO);
                 this.estadoJLabel.setVisible(true);
             }else{
-                tipoMotor.removeWord(this.borrarJText.getText().toString());
+                tipoMotor.removeWord(this.borrarJText.getText().toUpperCase());
                 this.estadoJLabel.setText("La palabra fue borrada con exito");
                 this.estadoJLabel.setForeground(COLOR_VERDE);
                 this.estadoJLabel.setVisible(true);
@@ -213,7 +215,7 @@ public class ModificarMotor extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ModificarMotor dialog = new ModificarMotor(new javax.swing.JFrame(), true);
+                ModificarMotor dialog = new ModificarMotor(new javax.swing.JFrame(), true, new Motor_Test());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

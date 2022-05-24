@@ -23,12 +23,22 @@ import java.util.logging.Logger;
  * @author ismac
  */
 public class Motor_Fichero implements Motor{
-    
-    
     Random rn = new Random();
     private List<String> palabras = new ArrayList<>();
     private String ruta = "." + File.separator + "data" + File.separator + "palabras.txt";
     File f = new File(ruta);
+    
+    public Motor_Fichero(){
+        try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
+                String linea = br.readLine();
+                while(linea != null){
+                    palabras.add(linea);
+                    linea = br.readLine(); 
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
     
     public boolean existeFichero() {
         File f = new File(ruta);
@@ -40,25 +50,12 @@ public class Motor_Fichero implements Motor{
         return f.getParentFile().exists();
     }
 
-     public boolean crearFicheroTexto(String texto){
-        if(!existeFichero() && existeCarpetaPadre()){
-            try(Writer bw = new BufferedWriter(new FileWriter(f))){
-                bw.write(texto);
-                return true;
-            } catch (IOException ex) {
-                Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }
-        }
-        else{
-            return false;
-        }        
-    }
     @Override
     public boolean addWord(String word) {
          if(existeFichero() && existeCarpetaPadre()){
             try(Writer wr = new BufferedWriter(new FileWriter(f, true))){
                 wr.write("\n" + word.toUpperCase());
+                palabras.add(word);
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,38 +70,15 @@ public class Motor_Fichero implements Motor{
     @Override
     public boolean existsWord(String word) {
         boolean existe = false;
-         try(BufferedReader br = new BufferedReader(new FileReader(f))){
-                String linea = br.readLine();
-                while(linea != null && existe == false){
-                    if(linea != null){
-                        palabras.add(linea);
-                    } 
-                    linea = br.readLine();
-                    if(palabras.contains(word.toUpperCase())){
-                        existe = true;
-                    } 
-                } 
-                return existe;
-            } catch (IOException ex) {
-                Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
-                return false;
-            }  
+        if(palabras.contains(word.toUpperCase())){
+          existe = true;
+        } 
+        return existe;  
     }
 
     @Override
     public boolean removeWord(String word) {
         word = word.toUpperCase();
-        try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
-                String linea = br.readLine();
-                while(linea != null){
-                    if(linea != null){
-                        palabras.add(linea);
-                    } 
-                    linea = br.readLine(); 
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
-            }
         if (!palabras.contains(word.toUpperCase())) {
             return false;
         }
@@ -131,7 +105,7 @@ public class Motor_Fichero implements Motor{
             }
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(f));) {
-            bw.append(palabra.toUpperCase());
+            bw.write(palabra.toUpperCase());
             return true;
         } catch (IOException ex) {
             Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,20 +115,9 @@ public class Motor_Fichero implements Motor{
 
     @Override
     public FixedLengthString randomWord() {
-            try(BufferedReader br = new BufferedReader(new FileReader(ruta))){
-                String linea = br.readLine();
-                while(linea != null){
-                    if(linea != null){
-                        palabras.add(linea);
-                    } 
-                    linea = br.readLine(); 
-                }
                 int nR = rn.nextInt(palabras.size());
                 return new FixedLengthString(palabras.get(nR));
-            } catch (IOException ex) {
-                Logger.getLogger(Motor_Fichero.class.getName()).log(Level.SEVERE, null, ex);
-                return null;
-            }
     }
     
 }
+

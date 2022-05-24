@@ -23,7 +23,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static final java.awt.Color COLOR_VERDE = new java.awt.Color(0,204,51);
     private static final java.awt.Color COLOR_DEFAULT = new java.awt.Color(187,187,187);
    
-    private static Motor tipoMotor = new Motor_Test();
+    private Motor tipoMotor = new Motor_Test();
     private int numIntentos = 0;
     private Set<Character> amarillo = new TreeSet<>();
     private Set<Character> rojo = new TreeSet<>();
@@ -59,9 +59,6 @@ public class MainGUI extends javax.swing.JFrame {
         
     }
     
-    public static Motor getTipoMotor(){
-        return tipoMotor;
-    }
 
     public final void inicializarLabels() {
         for (int i = 1; i <= MAX_INTENTOS; i++) {
@@ -565,7 +562,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void JRadioEditarMotorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioEditarMotorActionPerformed
        if(this.JRadioEditarMotor.isSelected()){
            this.JRadioEditarMotor.setSelected(false);
-           org.daw1.ismael.gui.ModificarMotor panel = new org.daw1.ismael.gui.ModificarMotor(this, rootPaneCheckingEnabled);
+           org.daw1.ismael.gui.ModificarMotor panel = new org.daw1.ismael.gui.ModificarMotor(this, rootPaneCheckingEnabled, this.tipoMotor);
            panel.setVisible(true);
        }
     }//GEN-LAST:event_JRadioEditarMotorActionPerformed
