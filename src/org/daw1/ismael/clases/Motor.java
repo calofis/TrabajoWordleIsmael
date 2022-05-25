@@ -4,6 +4,8 @@
  */
 package org.daw1.ismael.clases;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author ismac
@@ -16,5 +18,5 @@ public interface Motor{
             
     public boolean removeWord(String word);
     
-    public String randomWord();
+    public String randomWord() throws SQLException;
 }

@@ -50,8 +50,12 @@ public class ModificarMotor extends javax.swing.JDialog {
         estadoJLabel = new javax.swing.JLabel();
         tituloJPanel = new javax.swing.JPanel();
         tituloJLabel = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu = new javax.swing.JMenu();
+        jMenuItemCerrar = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         mainJPanel.setLayout(new java.awt.BorderLayout());
 
@@ -119,6 +123,20 @@ public class ModificarMotor extends javax.swing.JDialog {
 
         mainJPanel.add(tituloJPanel, java.awt.BorderLayout.PAGE_START);
 
+        jMenu.setText("Opciones");
+
+        jMenuItemCerrar.setText("Cerrar");
+        jMenuItemCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCerrarActionPerformed(evt);
+            }
+        });
+        jMenu.add(jMenuItemCerrar);
+
+        jMenuBar1.add(jMenu);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,9 +147,9 @@ public class ModificarMotor extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 375, Short.MAX_VALUE)
+            .addGap(0, 352, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(mainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE))
+                .addComponent(mainJPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE))
         );
 
         pack();
@@ -184,6 +202,12 @@ public class ModificarMotor extends javax.swing.JDialog {
             this.estadoJLabel.setVisible(true);
         }
     }//GEN-LAST:event_borrarJButtomActionPerformed
+
+    private void jMenuItemCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCerrarActionPerformed
+        this.setModal(false);
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,6 +265,9 @@ public class ModificarMotor extends javax.swing.JDialog {
     private javax.swing.JLabel estadoJLabel;
     private javax.swing.JPanel estadoJPanel;
     private javax.swing.JPanel insertarJPanel;
+    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItemCerrar;
     private javax.swing.JPanel mainJPanel;
     private javax.swing.JLabel tituloJLabel;
     private javax.swing.JPanel tituloJPanel;

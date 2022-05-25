@@ -18,9 +18,8 @@ public class WordleIsmael {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws SQLException {
-        Motor_BDgl motor = new Motor_BDgl();
-        System.out.println(motor.getWords().toString());
+    public static void main(String[] args){
+      
     }
     
 }

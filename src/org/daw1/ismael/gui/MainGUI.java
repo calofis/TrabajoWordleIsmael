@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import org.daw1.ismael.clases.*;
 
 
@@ -42,7 +43,8 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form MainGUI
      */
     public MainGUI() {
-        initComponents();
+        try {
+         initComponents();
         inicializarLabels();
         Objects.requireNonNull(tipoMotor);
         this.tipoMotor = tipoMotor;
@@ -58,7 +60,10 @@ public class MainGUI extends javax.swing.JFrame {
         this.JRadioEditarMotor.setSelected(false);
         this.JRadioTest.setEnabled(false);
         this.JRadioBaseDatosGl.setSelected(false);
-        
+         } catch (SQLException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
         
     }
     
@@ -80,24 +85,28 @@ public class MainGUI extends javax.swing.JFrame {
     }
     
     private void resetarJuego(){
-         for (int i = 1; i <= MAX_INTENTOS; i++) {
-            for (int j = 1; j <= TAMANHO_PALABRA; j++) {
-                labels[i-1][j-1].setText("");
-            } 
+        try {
+            for (int i = 1; i <= MAX_INTENTOS; i++) {
+                for (int j = 1; j <= TAMANHO_PALABRA; j++) {
+                    labels[i-1][j-1].setText("");
+                }
+            }
+            this.palabra = this.tipoMotor.randomWord().toUpperCase();
+            this.ExitoJPanel.setVisible(false);
+            amarillo.clear();
+            this.ExisteJLabel.setText("");
+            rojo.clear();
+            this.MalJLabel.setText("");
+            verde.clear();
+            this.BienJLabel.setText("");
+            this.EnviarButtom.setEnabled(true);
+            this.PalabraTextField.setEnabled(true);
+            this.PalabraTextField.setText("");
+            this.numIntentos = 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-        this.palabra = this.tipoMotor.randomWord().toUpperCase();
-        this.ExitoJPanel.setVisible(false);
-        amarillo.clear();
-        this.ExisteJLabel.setText("");
-        rojo.clear();
-        this.MalJLabel.setText("");
-        verde.clear();
-        this.BienJLabel.setText("");
-        this.EnviarButtom.setEnabled(true);
-        this.PalabraTextField.setEnabled(true);
-        this.PalabraTextField.setText("");
-        this.numIntentos = 0;
-        
         
     }
     
@@ -576,11 +585,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void JRadioBaseDatosEsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosEsActionPerformed
          if(this.JRadioBaseDatosEs.isSelected()){
-             try {
-                 this.tipoMotor = new Motor_BDes();
-             } catch (SQLException ex) {
-                 Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-             }
+            this.tipoMotor = new Motor_BD("es");
             this.JRadioFichero.setSelected(false);
             this.JRadioTest.setSelected(false);
             this.JRadioBaseDatosGl.setSelected(false);
@@ -597,17 +602,19 @@ public class MainGUI extends javax.swing.JFrame {
        if(this.JRadioEditarMotor.isSelected()){
            this.JRadioEditarMotor.setSelected(false);
            org.daw1.ismael.gui.ModificarMotor panel = new org.daw1.ismael.gui.ModificarMotor(this, rootPaneCheckingEnabled, this.tipoMotor);
-           panel.setVisible(true);
+           panel.setModal(true);
+           panel.setLocationRelativeTo(this);
+           while(panel.isModal()){
+               panel.setVisible(true);
+           }
+           panel.setVisible(false);
+           resetarJuego();
        }
     }//GEN-LAST:event_JRadioEditarMotorActionPerformed
 
     private void JRadioBaseDatosGlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JRadioBaseDatosGlActionPerformed
         if(this.JRadioBaseDatosGl.isSelected()){
-            try {
-                this.tipoMotor = new Motor_BDgl();
-            } catch (SQLException ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.tipoMotor = new Motor_BD("gl");
             this.JRadioFichero.setSelected(false);
             this.JRadioTest.setSelected(false);
             this.JRadioBaseDatosEs.setSelected(false);
